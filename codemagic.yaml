@@ -4,39 +4,23 @@ workflows:
     max_build_duration: 60
     environment:
       flutter: stable
-      android:
-        components:
-          - build-tools-34.0.0
-          - platform-tools
-          - platforms;android-34
-          - ndk;27.0.12077973
-
       vars:
         PACKAGE_NAME: "safe_exam_app"
 
-    caching:
-      cache_paths:
-        - ~/.pub-cache
-        - build/
-
     scripts:
-      - name: Check Flutter version
-        script: |
-          flutter --version
-
-      - name: Install dependencies
+      - name: Install Dependencies
         script: |
           flutter pub get
 
-      - name: Clean build
+      - name: Clean
         script: |
           flutter clean
 
-      - name: Build Android AppBundle (.aab)
+      - name: Build AAB
         script: |
           flutter build appbundle --release
 
-      - name: Build APK (optional)
+      - name: Build APK
         script: |
           flutter build apk --release
 
@@ -44,7 +28,7 @@ workflows:
       - build/app/outputs/flutter-apk/app-release.apk
       - build/app/outputs/bundle/release/app-release.aab
 
-    publishing:
-      email:
-        recipients:
-          - your-email@example.com
+    cache:
+      paths:
+        - ~/.pub-cache
+        - build/
